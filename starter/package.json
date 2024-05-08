@@ -1,0 +1,22 @@
+{
+  "name": "shopping-cart-project",
+  "version": "1.0.0",
+  "description": "shopping cart project with tests",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src/assets/script.js",
+    "test": "jest",
+    "start": "live-server --port=3000 src"
+  },
+  "author": "",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "dependencies": {
+    "jest": "^27.5.1",
+    "live-server": "^1.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.2.0",
+    "eslint": "^9.2.0",
+    "globals": "^15.1.0"
+  }
+}
