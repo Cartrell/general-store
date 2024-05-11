@@ -189,5 +189,13 @@ document.querySelector('.currency-select').addEventListener('change', function h
     drawCart();
     drawCheckout();
 });
+
+function updateStoreHeader() {
+  /** @type {HTMLHeadingElement} */
+  const header = document.getElementById('storeName');
+  header.innerText = getStoreHeader();
+}
+
+updateStoreHeader();
 /* End currency converter */
 /* End standout suggestions */
