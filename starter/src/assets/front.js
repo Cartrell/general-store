@@ -5,12 +5,13 @@ function drawProducts() {
     let productList = document.querySelector('.products');
     let productItems = '';
     products.forEach((element) => {
+      const price = Number(element.price).toFixed(2);
         productItems += `
-            <div data-productId='${element.productId}'>
+            <div class="panel-back" data-productId='${element.productId}'>
                 <img src='${element.image}'>
                 <h3>${element.name}</h3>
-                <p>price: ${currencySymbol}${element.price}</p>
-                <button class="add-to-cart">Add to Cart</button>
+                <p>price: ${currencySymbol}${price}</p>
+                <button class="add-to-cart btn-confirm">Add to Cart</button>
             </div>
         `;
     });
@@ -24,17 +25,17 @@ function drawCart() {
     // clear cart before drawing
     let cartItems = '';
     cart.forEach((element) => {
-        let itemTotal = element.price * element.quantity;
+        let itemTotal = Number(element.price * element.quantity).toFixed(2);
 
         cartItems += `
-            <div data-productId='${element.productId}'>
+            <div class="panel-header" data-productId='${element.productId}'>
                 <h3>${element.name}</h3>
                 <p>price: ${currencySymbol}${element.price}</p>
                 <p>quantity: ${element.quantity}</p>
                 <p>total: ${currencySymbol}${itemTotal}</p>
-                <button class="qup">+</button>
-                <button class="qdown">-</button>
-                <button class="remove">remove</button>
+                <button class="qup btn-confirm">+</button>
+                <button class="qdown btn-confirm">-</button>
+                <button class="remove btn-confirm">remove</button>
             </div>
         `;
     });
@@ -50,7 +51,7 @@ function drawCheckout() {
     checkout.innerHTML = '';
 
     // run cartTotal() from script.js
-    let cartSum = cartTotal();
+    let cartSum = cartTotal().toFixed(2);
 
     let div = document.createElement('div');
     div.innerHTML = `<p>Cart Total: ${currencySymbol}${cartSum}`;
@@ -110,7 +111,8 @@ document.querySelector('.pay').addEventListener('click', (e) => {
     amount *= 1;
 
     // Set cashReturn to return value of pay()
-    let cashReturn = pay(amount);
+    let cashReturn = pay(amount).toFixed(2);
+    let amountStr = amount.toFixed(2);
 
     let paymentSummary = document.querySelector('.pay-summary');
     let div = document.createElement('div');
@@ -119,7 +121,7 @@ document.querySelector('.pay').addEventListener('click', (e) => {
     // Else request additional funds
     if (cashReturn >= 0) {
         div.innerHTML = `
-            <p>Cash Received: ${currencySymbol}${amount}</p>
+            <p>Cash Received: ${currencySymbol}${amountStr}</p>
             <p>Cash Returned: ${currencySymbol}${cashReturn}</p>
             <p>Thank you!</p>
         `;
@@ -127,7 +129,7 @@ document.querySelector('.pay').addEventListener('click', (e) => {
         // reset cash field for next entry
         document.querySelector('.received').value = '';
         div.innerHTML = `
-            <p>Cash Received: ${currencySymbol}${amount}</p>
+            <p>Cash Received: ${currencySymbol}${amountStr}</p>
             <p>Remaining Balance: ${cashReturn}$</p>
             <p>Please pay additional amount.</p>
             <hr/>
@@ -141,10 +143,10 @@ document.querySelector('.pay').addEventListener('click', (e) => {
 /* Begin remove all items from cart */
 function dropCart(){
     let shoppingCart = document.querySelector('.empty-btn');
-    let div = document.createElement("button");
-    div.classList.add("empty");
-    div.innerHTML =`Empty Cart`;
-    shoppingCart.append(div);
+    let emptyButton = document.createElement("button");
+    emptyButton.classList.add("empty", "btn-confirm");
+    emptyButton.innerHTML =`Empty Cart`;
+    shoppingCart.append(emptyButton);
 }
 dropCart();
 
@@ -161,7 +163,7 @@ document.querySelector('.empty-btn').addEventListener('click', (e) => {
 function currencyBuilder(){
     let currencyPicker = document.querySelector('.currency-selector');
     let select = document.createElement("select");
-    select.classList.add("currency-select");
+    select.classList.add("currency-select", "panel-back");
     select.innerHTML = `<option value="USD">USD</option>
                         <option value="EUR">EUR</option>
                         <option value="YEN">YEN</option>`;

@@ -1,84 +1,167 @@
 * {
-    font-family: 'Montserrat', sans-serif;
-    padding: 0;
-    margin: 0;
+  font-family: 'Play', sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 h1 {
-    text-align: center;
-    padding: 1em;
+  text-align: center;
+  padding: 0.25em;
 }
+
 h2, h3 {
-    padding: 1em 0 .5em;
+  padding: 0.65em;
+  font-size: 1.5em;
+  text-align: center;
 }
+
 p {
-    padding-bottom: 1em;
-}
-.products-container{
-    width: 100%;
-    max-width: 55em;
-    padding: 2em;
-}
-.cart-container {
-    display: flex;
-}
-.checkout-container {
-    max-width: 34em;
-    padding: 2em;
-    background: #efefef;
-}
-.products, .cart{
-    display: flex;
-    flex-wrap: wrap;
+  padding-bottom: 1em;
+  font-size: 1.5em;
 }
 
-.products > div {
-    background: #f5f5f5;
-    margin: 1em;
-    padding: 2em;
+.btn-confirm {
+  background-color: #04f;
+  border: 3px solid #666;
+  border-radius: 10px;
+  color: #eee;
+  font-size: 1rem;
+  line-height: 2.5em;
+  padding: 0 20px;
+  text-align: center;
+  text-shadow: 1px 1px 1px #000;
+  text-transform: uppercase;
 }
 
-.products > div img {
-    max-width: 175px;
-    height: auto;
+.btn-confirm:hover {
+  background-color: #07f;
+  color: #ff0;
+  cursor: pointer;
+  filter: brightness(1.2);
 }
 
-.products > div h3 {
-    font-weight: 800;
+.btn-confirm:active {
+  color: #eee;
+  filter: brightness(0.8);
+  transform: scale(0.975);
+}
+
+.cart {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cart, .products {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .cart > div {
-    border: 1px solid #ccc;
-    margin: 1em;
-    padding: 2em;
-}
-.checkout-container {
-    max-width: 34em;
-}
-.checkout {
-    margin-bottom: 4em;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin: 0.5em;
+  padding: 1em 2em;
 }
 
-button {
-    border: 1px solid #ccc;
-    background: #fff;
-    padding: 1em;
-    transition: .2s ease all;
-    text-transform: uppercase;
+.cart-container {
+  display: flex;
 }
-button.pay {
-    background: #f5f5f5;
-    vertical-align: middle
+
+.checkout {
+  margin-bottom: 4em;
 }
-button:hover {
-    background: rgb(93, 120, 118);
-    color: #fff;
-    cursor: pointer;
+
+.checkout-container {
+  max-width: 34em;
+}
+
+.checkout-container {
+  max-width: 34em;
+  padding: 0 2em 2em;
+  background: #efefef;
+}
+
+.currency-select {
+  font-size: 2em;
+  background-color: #006;
+}
+
+/*
+  by default, it's an empty container for the .currency-select element, which
+  is created dynamically
+*/
+.currency-selector {
+  display: inline-block;
+  padding: 20px;
+}
+
+.empty {
+  margin: 1em 0;
+}
+
+.panel-back {
+  border: 21px solid;
+  border-image: url(../images/ui/box-9.webp) 21 fill;
+  color: white;
+}
+
+.panel-header {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  margin: 1em;
+}
+
+.products > div {
+  background: #f5f5f5;
+  margin: 1em;
+  color: white;
+  padding: 2em;
+}
+
+.products > div h3 {
+  font-weight: 800;
+}
+
+.products > div img {
+  max-width: 150px;
+  height: auto;
+}
+
+.products-container {
+  width: 100%;
+  max-width: 55em;
+  padding: 2em;
 }
 
 .received {
-    font-size: 1.5em;
-    padding: 0.3em;
-    border: 1px solid #ccc;
-    vertical-align: middle
+  font-size: 1.5em;
+  padding: 0.3em;
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  vertical-align: middle
 }
+
+.shopping-cart {
+  background-image: url(../images/ui/town-bg.webp);
+}
+
+/*
+button {
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 1em;
+  transition: .2s ease all;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background: rgb(93, 120, 118);
+  color: #fff;
+  cursor: pointer;
+}
+
+button.pay {
+  background: #f5f5f5;
+  vertical-align: middle
+}
+*/

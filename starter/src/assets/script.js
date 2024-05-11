@@ -3,18 +3,12 @@
 // ================================================================================================
 
 /**
- * @typedef {'EUR'|'USD'|'YEN'} ExchangeRateId
+ * @typedef {import('./products.js').Product} Product
+ * @typedef {import('./products.js').ProductType} Product
  */
 
 /**
- * @typedef Product
- * @type {object}
- * @property {string} name: name of product
- * @property {number} basePrice: base price of product
- * @property {number} price: price of product with exchange rate applied
- * @property {number} quantity: quantity in cart should start at zero
- * @property {number} productId: unique id for the product
- * @property {string} image: picture of product
+ * @typedef {'EUR'|'USD'|'YEN'} ExchangeRateId
  */
 
 // ================================================================================================
@@ -38,20 +32,17 @@ const ExchangeRates = Object.freeze({
   [ExchangeRateIds.YEN]: 154.9235,
 });
 
+/** minimum number of products than can be available */
+const MIN_PRODUCTS_AVAILABLE = 3;
+
+/** maximum number of products than can be available */
+const MAX_PRODUCTS_AVAILABLE = 7;
+
 /* Create an array named products which you will use to add all of your product object literals that you create in the next step. */
 /** @type {Product[]} */
 const products = [];
 
-/* Create 3 or more product objects using object literal notation 
-   Each product should include five properties
-   - name: name of product (string)
-   - price: price of product (number)
-   - quantity: quantity in cart should start at zero (number)
-   - productId: unique id for the product (number)
-   - image: picture of product (url string)
-*/
-
-/** @type {Product} */
+/*
 const cherry = {
   name: 'Cherry',
   basePrice: 3.20,
@@ -61,7 +52,6 @@ const cherry = {
   image: 'images/cherry.jpg',
 };
 
-/** @type {Product} */
 const orange = {
   name: 'Orange',
   basePrice: 1.15,
@@ -71,7 +61,6 @@ const orange = {
   image: 'images/orange.jpg',
 };
 
-/** @type {Product} */
 const strawberry = {
   name: 'Strawberry',
   basePrice: 1.85,
@@ -80,6 +69,7 @@ const strawberry = {
   productId: 3,
   image: 'images/strawberry.jpg',
 };
+*/
 
 /* Declare an empty array named cart to hold the items in the cart */
 /** @type {Product[]} */
@@ -89,11 +79,6 @@ const cart = [];
 let SelectedExctangeRateId = ExchangeRateIds.USD;
 
 let totalPaid = 0;
-
-// ================================================================================================
-// global execution
-// ================================================================================================
-products.push(cherry, orange, strawberry);
 
 /* Images provided in /images folder. All images from Unsplash.com
    - cherry.jpg by Mae Mu
@@ -116,6 +101,15 @@ function findProduct(productId) {
   });
 
   return (product);
+}
+
+// ------------------------------------------------------------------------------------------------
+/**
+ * Rounds a number to two decimal places.
+ * @param {number} value 
+ */
+function round(value) {
+  return (Math.round(value * 100) / 100);
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -219,7 +213,7 @@ function cartTotal() {
   }
 
   const total = cart.reduce(addProductsCost, 0);
-  return (total);
+  return (round(total));
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -245,7 +239,7 @@ function pay(amount) {
   totalPaid += amount;
   const totalCost = cartTotal();
   const balance = totalPaid - totalCost;
-  return (balance);
+  return (round(balance));
 }
 
 
@@ -274,8 +268,39 @@ function currency(currencyId) {
  */
 function convertCurrency(usdValue) {
   const exchangeRate = ExchangeRates[SelectedExctangeRateId];
-  return (usdValue * exchangeRate);
+  const rawValue = usdValue * exchangeRate;
+  const roundedValue = round(rawValue);
+  return (roundedValue);
 }
+
+function selectRandomProducts() {
+  const range = MAX_PRODUCTS_AVAILABLE - MIN_PRODUCTS_AVAILABLE;
+  let numProducts = MIN_PRODUCTS_AVAILABLE + Math.floor(Math.random() * range);
+
+  // sanity checks for min and max
+  numProducts = Math.min(numProducts, ProductsDb.length - 1);
+  numProducts = Math.max(0, numProducts);
+
+  const productsPool = ProductsDb.concat();
+  /** @type {Product[]} */
+  const productsSelected = [];
+
+  for (let index = 0; index < numProducts; index += 1) {
+    const randomProductIndex = Math.floor(Math.random() * productsPool.length);
+    const product = productsPool[randomProductIndex];
+    if (product) {
+      productsSelected.push(product);
+      productsPool.splice(randomProductIndex, 1);
+    }
+  }
+
+  return (productsSelected);
+}
+
+// ================================================================================================
+// global execution
+// ================================================================================================
+products.push(...selectRandomProducts());
 
 updateProductPrices();
 
@@ -285,7 +310,6 @@ updateProductPrices();
    npm run test
 */
 
-/* eslint-disable no-undef */
 module.exports = {
    products,
    cart,
@@ -294,7 +318,7 @@ module.exports = {
    decreaseQuantity,
    removeProductFromCart,
    cartTotal,
-   pay, 
+   pay,
    emptyCart,
    /* Uncomment the following line if completing the currency converter bonus */
    currency,

@@ -8,32 +8,37 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
     <link href="assets/styles.css" rel="stylesheet">
+    <script src="assets/products.js" defer></script>
     <script src="assets/script.js" defer></script>
     <script src="assets/front.js" defer></script>
 </head>
 <body>
     <div class="shopping-cart">
-        <h1>Kirana's Fruit Stand</h1>
+        <h1 class="panel-back">Kirana's Fruit Stand</h1>
         <div class="currency-selector"></div>
         <div class="cart-container">
             <div class="products-container">
-                <h2>Products</h2>
+                <h2 class="panel-back">Products</h2>
                 <div class="products"></div>
-                <h2>Your Shopping Cart</h2>
+
+                <h2 class="panel-back">Your Shopping Cart</h2>
                 <div class="empty-btn"></div>
-                <div class="cart"></div>
+                <div class="cart panel-back"></div>
             </div>
-            <div class="checkout-container">
-                <h2>Checkout</h2>
+
+            <div class="checkout-container panel-back">
+                <h2 class="panel-header">Checkout</h2>
                 <div class="checkout">
                     <div class="cart-total"></div>
                     <form>
                         <label>Enter Cash Received:</label>
                         <input class="received" type="text">
-                        <button class="pay">Submit</button> 
+                        <br />
+                        <button class="pay btn-confirm">Submit</button> 
                     </form>
-                    <h3>Receipt</h3>
+                    <h3 class="panel-header">Receipt</h3>
                     <div class="pay-summary"></div>
                 </div>
             </div>
