@@ -35,10 +35,6 @@ p {
   margin: 10px 0;
 }
 
-/* .add-product-section-form {
-  margin: 0 10px;
-} */
-
 .add-product-section-form > div > label {
   display: inline-block;
   min-width: 6em;
