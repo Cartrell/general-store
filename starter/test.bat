@@ -1,2 +1,5 @@
 @echo off
-npm run test
+(
+  npm run test
+  pause
+)
