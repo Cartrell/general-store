@@ -18,6 +18,15 @@
  * @property {string} image: picture of product
  */
 
+/**
+ * @typedef ProductConfig
+ * @type {object}
+ * @property {string} name: name of product
+ * @property {number} price: price of product, in USD
+ * @property {number} productId: unique id for the product
+ * @property {string} image: picture of product
+ */
+
 // ================================================================================================
 // global variables
 // ================================================================================================
@@ -44,6 +53,9 @@ const MIN_PRODUCTS_AVAILABLE = 3;
 /** maximum number of products than can be available */
 const MAX_PRODUCTS_AVAILABLE = 7;
 
+/** default interval us */
+const PRODUCT_ID_INTERVAL = 100;
+
 const StoreNames = [
   'Ah, a customer! Welcome!',
   'Welcome to the emporium!',
@@ -60,6 +72,11 @@ const products = [];
 const BaseFolder = '/images/products/';
 const DefaultExt = 'webp';
 
+let nextAvailableProductId = 0;
+
+// ------------------------------------------------------------------------------------------------
+// PRODUCTS DATABASE - BEGIN
+// ------------------------------------------------------------------------------------------------
 /**
  * @param {string} filenamePart 
  * @param {string} [ext='webm']
@@ -73,14 +90,14 @@ function buildProductImagePath(filenamePart, ext) {
 }
 
 /** @type {Product[]} */
-const ProductsDb = [
+const productsDb = [
   {
     name: 'Apple',
     basePrice: 1.1,
     price: 0,
     quantity: 0,
     productId: 100,
-    image: buildProductImagePath('apple'),
+    image: buildProductImagePath('apple1'),
   },
 
   {
@@ -100,8 +117,7 @@ const ProductsDb = [
     productId: 300,
     image: buildProductImagePath('book-of-dark-magic'),
   },
-
-  /*
+/*
   {
     name: 'Book Of Light Magic',
     basePrice: 80.15,
@@ -176,7 +192,7 @@ const ProductsDb = [
 
   {
     name: 'Flask Of Water',
-    basePrice: 1.3,
+    basePrice: 0.5,
     price: 0,
     quantity: 0,
     productId: 1200,
@@ -203,7 +219,7 @@ const ProductsDb = [
 
   {
     name: 'Health Potion',
-    basePrice: 1.25,
+    basePrice: 0.99,
     price: 0,
     quantity: 0,
     productId: 1500,
@@ -247,7 +263,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'lantern',
+    name: 'Lantern',
     basePrice: 12.34,
     price: 0,
     quantity: 0,
@@ -256,7 +272,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'light-armor',
+    name: 'Light Armor',
     basePrice: 42.42,
     price: 0,
     quantity: 0,
@@ -274,7 +290,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'magic-amulet',
+    name: 'Magic Amulet',
     basePrice: 120,
     price: 0,
     quantity: 0,
@@ -283,7 +299,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'magic-boots',
+    name: 'Magic Boots',
     basePrice: 60.95,
     price: 0,
     quantity: 0,
@@ -328,7 +344,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'paladin-shield',
+    name: 'Paladin\'s Shield',
     basePrice: 152.63,
     price: 0,
     quantity: 0,
@@ -337,7 +353,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'shield',
+    name: 'Shield',
     basePrice: 62.97,
     price: 0,
     quantity: 0,
@@ -346,7 +362,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'short-sword',
+    name: 'Short Sword',
     basePrice: 19.99,
     price: 0,
     quantity: 0,
@@ -355,7 +371,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'slice-of-red-velvet-pie',
+    name: 'Slice Of Red Velvet Pie',
     basePrice: 2.25,
     price: 0,
     quantity: 0,
@@ -364,7 +380,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'socks',
+    name: 'Socks',
     basePrice: 1.99,
     price: 0,
     quantity: 0,
@@ -373,7 +389,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'spear',
+    name: 'Spear',
     basePrice: 82.8,
     price: 0,
     quantity: 0,
@@ -427,8 +443,8 @@ const ProductsDb = [
   },
 
   {
-    name: 'torch',
-    basePrice: 1.05,
+    name: 'Torch',
+    basePrice: 0.25,
     price: 0,
     quantity: 0,
     productId: 4000,
@@ -436,7 +452,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'underwear',
+    name: 'Underwear',
     basePrice: 4.78,
     price: 0,
     quantity: 0,
@@ -445,7 +461,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'wizards-cape',
+    name: 'Wizard\'s Cape',
     basePrice: 99.99,
     price: 0,
     quantity: 0,
@@ -454,7 +470,7 @@ const ProductsDb = [
   },
 
   {
-    name: 'wizards-hat',
+    name: 'Wizard\'s Hat',
     basePrice: 78.36,
     price: 0,
     quantity: 0,
@@ -464,20 +480,18 @@ const ProductsDb = [
   */
 ];
 
+// ------------------------------------------------------------------------------------------------
+// PRODUCTS DATABASE - END
+// ------------------------------------------------------------------------------------------------
+
 /* Declare an empty array named cart to hold the items in the cart */
 /** @type {Product[]} */
 const cart = [];
 
 /** @type {ExchangeRateId} */
-let SelectedExctangeRateId = ExchangeRateIds.USD;
+let selectedExctangeRateId = ExchangeRateIds.USD;
 
 let totalPaid = 0;
-
-/* Images provided in /images folder. All images from Unsplash.com
-   - cherry.jpg by Mae Mu
-   - orange.jpg by Mae Mu
-   - strawberry.jpg by Allec Gomes
-*/
 
 // ================================================================================================
 // functions
@@ -623,6 +637,11 @@ function pay(amount) {
   totalPaid += amount;
   const totalCost = cartTotal();
   const balance = totalPaid - totalCost;
+
+  if (balance > 0) {
+    totalPaid = 0;
+  }
+
   return (balance);
 }
 
@@ -642,7 +661,7 @@ function updateProductPrices() {
  */
 function currency(currencyId) {
   const ids = Object.values(ExchangeRateIds);
-  SelectedExctangeRateId = ids.includes(currencyId) ? currencyId : ExchangeRateIds.USD;
+  selectedExctangeRateId = ids.includes(currencyId) ? currencyId : ExchangeRateIds.USD;
   updateProductPrices();
 }
 
@@ -651,7 +670,7 @@ function currency(currencyId) {
  * @param {number} usdValue 
  */
 function convertCurrency(usdValue) {
-  const exchangeRate = ExchangeRates[SelectedExctangeRateId];
+  const exchangeRate = ExchangeRates[selectedExctangeRateId];
   return (usdValue * exchangeRate);
 }
 
@@ -661,10 +680,10 @@ function selectRandomProducts() {
   let numProducts = MIN_PRODUCTS_AVAILABLE + Math.floor(Math.random() * range);
 
   // sanity checks for min and max
-  numProducts = Math.min(numProducts, ProductsDb.length - 1);
+  numProducts = Math.min(numProducts, productsDb.length);
   numProducts = Math.max(0, numProducts);
 
-  const productsPool = ProductsDb.concat();
+  const productsPool = productsDb.concat();
   /** @type {Product[]} */
   const productsSelected = [];
 
@@ -681,17 +700,81 @@ function selectRandomProducts() {
 }
 
 // ------------------------------------------------------------------------------------------------
+/**
+ * Retrieves the next available product ID.
+ */
+function getNextAvailableProductId() {
+  if (nextAvailableProductId === 0) {
+    const currentHighestProductId = products
+      .reduce((prev, product) => Math.max(prev, product.productId), 0);
+    const PID = PRODUCT_ID_INTERVAL;
+    nextAvailableProductId = (Math.floor(currentHighestProductId / PID) * PID) + PID;
+  }
+
+  return (nextAvailableProductId);
+}
+
+// ------------------------------------------------------------------------------------------------
+/**
+ * Retrieves a random message to be used as the store header welcome banner.
+ */
 function getStoreHeader() {
   const randomIndex = Math.floor(Math.random() * StoreNames.length);
   const header = StoreNames[randomIndex];
   return (header ?? 'Welcome To My Shop!');
 }
 
+// ------------------------------------------------------------------------------------------------
+/**
+ * Determines if the specified product is unique.
+ * @param {number} productId The product id to check.
+ * @returns {boolean} `true` if the id is not currently used by any products, or `false` if it
+ * it's already used, or it does not represent a valid product id.
+ */
+function isProductIdUnique(productId) {
+  return (typeof (productId) === 'number'
+    && productId > 0
+    && !Number.isNaN(productId)
+    && !findProduct(productId));
+}
+
+// ------------------------------------------------------------------------------------------------
+/**
+ * Adds a new product to the products array.
+ * @param {ProductConfig} config The configuration that defines the product to add.
+ * @returns {boolean} `true` if the product was successfully added, `false` otherwise.
+ */
+function addProductToDb(config) {
+  if (!config
+  || !config.image
+  || !config.name
+  || (typeof(config.price) !== 'number' || config.price < 0)
+  || (typeof(config.productId) !== 'number' || config.productId <= 0)) {
+    return (false);
+  }
+
+  if (!isProductIdUnique(config.productId)) {
+    return (false);
+  }
+
+  /** @type {Product} */
+  const product = {
+    basePrice: config.price,
+    image: config.image,
+    name: config.name,
+    price: convertCurrency(product.price),
+    productId: config.productId,
+    quantity: 0,
+  };
+
+  products.push(product);
+  return (true);
+}
+
 // ================================================================================================
 // global execution
 // ================================================================================================
-// products.push(...selectRandomProducts());
-products.push(...ProductsDb);
+products.push(...selectRandomProducts());
 
 updateProductPrices();
 
@@ -711,7 +794,10 @@ module.exports = {
    cartTotal,
    pay,
    emptyCart,
+   addProductToDb,
+   getNextAvailableProductId,
    getStoreHeader,
+   isProductIdUnique,
    /* Uncomment the following line if completing the currency converter bonus */
    currency,
 }

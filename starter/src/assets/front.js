@@ -1,5 +1,8 @@
 let currencySymbol = '$';
 
+/** @type {Set.<HTMLImageElement>} */
+let errorImages = new Set();
+
 // Draws product list
 function drawProducts() {
     let productList = document.querySelector('.products');
@@ -7,7 +10,7 @@ function drawProducts() {
     products.forEach((element) => {
       const price = Number(element.price).toFixed(2);
         productItems += `
-            <div class="panel-back" data-productId='${element.productId}'>
+            <div class="product panel-back" data-productId='${element.productId}'>
                 <img src='${element.image}'>
                 <h3>${element.name}</h3>
                 <p>price: ${currencySymbol}${price}</p>
@@ -57,6 +60,26 @@ function drawCheckout() {
     div.innerHTML = `<p>Cart Total: ${currencySymbol}${cartSum}`;
     checkout.append(div);
 }
+
+// listen for `error` events when attempting to set the img attribute of image elements
+document.querySelector('.products').addEventListener('error', function(event) {
+  let productId = event.target.parentNode.getAttribute('data-productId');
+  if (!productId || event.target.tagName !== 'IMG') {
+    return;
+  }
+
+  /** @type {HTMLImageElement} */
+  const imgElement = event.target;
+
+  if (errorImages.has(imgElement)) {
+    // this image already has errored out. don't try to set its image again, to avoid
+    // a (async) loop of setting the image's src
+    return;
+  }
+
+  errorImages.add(imgElement);
+  imgElement.src = '/images/ui/error.webp';
+}, true); // Capture phase
 
 // Initialize store with products, cart, and checkout
 drawProducts();
@@ -190,12 +213,52 @@ document.querySelector('.currency-select').addEventListener('change', function h
     drawCheckout();
 });
 
-function updateStoreHeader() {
+/* End currency converter */
+
+/* begin - add new product */
+document.getElementById('add-product').addEventListener('click', () => {
+  const formData = new FormData(form);
+  const newProductId = Number.parseInt(formData.get('new-product-id-input'), 10);
+
+  /** @type {HTMLInputElement} */
+  const newProductIdInput = document.getElementById('new-product-id-input');
+  if (isProductIdUnique(newProductId)) {
+    newProductIdInput.setCustomValidity('');
+  } else {
+    newProductIdInput.setCustomValidity('The specified product ID must be unique.');
+  }
+
+  /** @type {HTMLFormElement} */
+  const form = document.getElementById('add-product-form');
+  if (!form.reportValidity()) {
+    return;
+  }
+
+  const productData = {
+    id: newProductId,
+    name: formData.get('new-product-name-input'),
+    price: formData.get('new-product-price-input'),
+    image: formData.get('new-product-image-input'),
+  };
+
+  if (addProductToDb(productData)) {
+    drawProducts();
+  }
+});
+
+/* end - add new product */
+
+// immediately invoked function expression (IIFE) used for initialization to prevent
+// temporary variables from polluting the global namespace
+(() => {
+  // assign the next available prouct id to the new-product id input
+  const newProductIdInput = document.getElementById('new-product-id-input');
+  newProductIdInput.value = getNextAvailableProductId();
+
+  // set a custom store header message
   /** @type {HTMLHeadingElement} */
   const header = document.getElementById('storeName');
   header.innerText = getStoreHeader();
-}
+})();
 
-updateStoreHeader();
-/* End currency converter */
 /* End standout suggestions */
