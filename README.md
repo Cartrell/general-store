@@ -2,6 +2,8 @@
 
 ![](./starter/src/dev-assets/general-store.webp)
 
+[Demo available here](https://gameplaycoder.com/projects/udacity/general-store/)
+
 ## Udacity's Standout Functionality
 * Added currency converter
 * Added form for adding new products
