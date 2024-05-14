@@ -10,7 +10,7 @@
 
 ## My own Standout Functionality
 * Uses 9-slice borders using [border-image-slice](https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-slice)
-* Added RGB color-changer for the
+* Added RGB color-changer for the UI panels
 * Added 42 products. By default, betweem three and seven products will be displayed at random each time the page is loaded.
 * Each time the page loaded, the welcome message is chosen from a few pre-defined ones.
 * The form for adding new products uses both standard and custom validation
