@@ -56,7 +56,7 @@ const MAX_PRODUCTS_AVAILABLE = 7;
 /** default interval us */
 const PRODUCT_ID_INTERVAL = 100;
 
-const StoreNames = [
+const STORE_WELCOME_MESSAGES = [
   'Ah, a customer! Welcome!',
   'Welcome to the emporium!',
   'Welcome to my shop!',
@@ -718,8 +718,8 @@ function getNextAvailableProductId() {
  * Retrieves a random message to be used as the store header welcome banner.
  */
 function getStoreHeader() {
-  const randomIndex = Math.floor(Math.random() * StoreNames.length);
-  const header = StoreNames[randomIndex];
+  const randomIndex = Math.floor(Math.random() * STORE_WELCOME_MESSAGES.length);
+  const header = STORE_WELCOME_MESSAGES[randomIndex];
   return (header ?? 'Welcome To My Shop!');
 }
 
