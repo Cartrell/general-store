@@ -222,9 +222,11 @@ function presentAddNewProductMessage(message) {
   /** @type {HTMLParagraphElement | null} */
   const element = document.querySelector('#add-new-product-result');
   if (!element) {
+    // sanity check
     return;
   }
 
+  // display result message for a short while
   element.textContent = message;
   setTimeout(() => {
     element.textContent = '';
@@ -277,6 +279,7 @@ function changeUiColor(colorName) {
   }
 
   /**
+   * removes existing css classes that start with `panel-back-` from the element
    * @param {HTMLElement} element 
    */
   function removeOptionColorClass(element) {
@@ -306,12 +309,14 @@ function changeUiColor(colorName) {
   const header = document.getElementById('storeName');
   header.innerText = getStoreHeader();
 
+  // initialize the rgb color-changer options
   /** @type {HTMLSelectElement} */
   const rgbSelect = document.querySelector('.rgb-select');
   rgbSelect.addEventListener('change', (event) => {
     changeUiColor(event.target.value);
   });
 
+  // reset selected rgb option
   rgbSelect.selectedIndex = 0;
 })();
 
