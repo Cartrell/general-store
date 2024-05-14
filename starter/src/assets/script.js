@@ -10,21 +10,21 @@
 /**
  * @typedef Product
  * @type {object}
- * @property {string} name: name of product
  * @property {number} basePrice: base price of product
- * @property {number} price: price of product with exchange rate applied
- * @property {number} quantity: quantity in cart should start at zero
- * @property {number} productId: unique id for the product
  * @property {string} image: picture of product
+ * @property {string} name: name of product
+ * @property {number} price: price of product with exchange rate applied
+ * @property {number} productId: unique id for the product
+ * @property {number} quantity: quantity in cart should start at zero
  */
 
 /**
  * @typedef ProductConfig
  * @type {object}
+ * @property {number} id: unique id for the product
+ * @property {string} image: picture of product
  * @property {string} name: name of product
  * @property {number} price: price of product, in USD
- * @property {number} productId: unique id for the product
- * @property {string} image: picture of product
  */
 
 // ================================================================================================
@@ -97,7 +97,7 @@ const productsDb = [
     price: 0,
     quantity: 0,
     productId: 100,
-    image: buildProductImagePath('apple1'),
+    image: buildProductImagePath('apple'),
   },
 
   {
@@ -117,7 +117,7 @@ const productsDb = [
     productId: 300,
     image: buildProductImagePath('book-of-dark-magic'),
   },
-/*
+
   {
     name: 'Book Of Light Magic',
     basePrice: 80.15,
@@ -477,7 +477,6 @@ const productsDb = [
     productId: 4300,
     image: buildProductImagePath('wizards-hat'),
   },
-  */
 ];
 
 // ------------------------------------------------------------------------------------------------
@@ -749,11 +748,11 @@ function addProductToDb(config) {
   || !config.image
   || !config.name
   || (typeof(config.price) !== 'number' || config.price < 0)
-  || (typeof(config.productId) !== 'number' || config.productId <= 0)) {
+  || typeof(config.id) !== 'number') {
     return (false);
   }
 
-  if (!isProductIdUnique(config.productId)) {
+  if (!isProductIdUnique(config.id)) {
     return (false);
   }
 
@@ -762,8 +761,8 @@ function addProductToDb(config) {
     basePrice: config.price,
     image: config.image,
     name: config.name,
-    price: convertCurrency(product.price),
-    productId: config.productId,
+    price: convertCurrency(config.price),
+    productId: config.id,
     quantity: 0,
   };
 

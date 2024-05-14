@@ -16,72 +16,72 @@
 </head>
 <body>
     <div class="shopping-cart">
-        <h1 id="storeName" class="panel-back">Welcome!</h1>
-        <div class="currency-selector"></div>
+        <h1 id="storeName" class="panel-back panel-back-blue">Welcome!</h1>
+        <div>
+          <div class="currency-selector"></div>
+          <div class="rgb-selector">
+            <select class="rgb-select panel-back panel-back-blue">
+              <option value="blue">Blue</option>
+              <option value="green">Green</option>
+              <option value="red">Red</option>
+            </select>
+          </div>
+        </div>
         <div class="cart-container">
             <div class="products-container">
-                <h2 class="panel-back">Products</h2>
+                <h2 class="panel-back panel-back-blue">Products</h2>
                 <div class="products"></div>
 
-                <div class="add-product-section-container panel-back">
+                <div class="add-product-section-container panel-back panel-back-blue">
                   <h2 class="panel-header">New Product</h2>
                   <div class="add-product-section-form-container">
                     <form id="add-product-form" class="add-product-section-form">
-                      <div>
-                        <label for="new-product-name-input">Name:</label>
-                        <input id="new-product-name-input"
-                          name="new-product-name-input"
-                          type="text"
-                          placeholder="All fields are required"
-                          required>
-                      </div>
+                      <label for="new-product-name-input">Name:</label>
+                      <input id="new-product-name-input"
+                        name="new-product-name-input"
+                        type="text"
+                        placeholder="All fields are required"
+                        required>
 
-                      <div>
-                        <label for="new-product-price-input">Price (USD):</label>
-                        <input id="new-product-price-input"
-                          name="new-product-price-input"
-                          type="number"
-                          min="0.01"
-                          step="0.01"
-                          placeholder="Min value is 0.01"
-                          required>
-                      </div>
+                      <label for="new-product-price-input">Price (USD):</label>
+                      <input id="new-product-price-input"
+                        name="new-product-price-input"
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="Min value is 0.01"
+                        required>
 
-                      <div>
-                        <label for="new-product-id-input">ID:</label>
-                        <input id="new-product-id-input"
-                          name="new-product-id-input"
-                          type="number"
-                          min="1"
-                          placeholder="Must be unique"
-                          required>
-                      </div>
+                      <label for="new-product-id-input">ID:</label>
+                      <input id="new-product-id-input"
+                        name="new-product-id-input"
+                        type="number"
+                        min="1"
+                        placeholder="Must be unique"
+                        required>
 
-                      <div>
-                        <label for="new-product-image-input">Image:</label>
-                        <input id="new-product-image-input"
-                          name="new-product-image-input"
-                          type="url"
-                          placeholder="URL to an image"
-                          required>
-                      </div>
+                      <label for="new-product-image-input">Image:</label>
+                      <input id="new-product-image-input"
+                        name="new-product-image-input"
+                        type="url"
+                        placeholder="URL to an image"
+                        required>
                     </form>
                     <div class="add-product-section-form-buttons">
-                      <button id="add-product" class="btn-confirm" type="button">Add</button>
-                      <button id="reset-add-product-form" class="btn-confirm" type="button">Reset</button>
+                      <button id="add-button" class="btn-confirm" type="button">Add</button>
                     </div>
                     <div class="add-product-section-form-result">
-                      <!-- <p>test</p> -->
+                      <p id="add-new-product-result"></p>
                     </div>
                   </div>
               </div>
 
-              <h2 class="panel-back">Your Shopping Cart</h2>
+              <h2 class="panel-back panel-back-blue">Your Shopping Cart</h2>
               <div class="empty-btn"></div>
-              <div class="cart panel-back"></div>
+              <div class="cart panel-back panel-back-blue"></div>
             </div>
 
-            <div class="checkout-container panel-back">
+            <div class="checkout-container panel-back panel-back-blue">
                 <h2 class="panel-header">Checkout</h2>
                 <div class="checkout">
                     <div class="cart-total"></div>

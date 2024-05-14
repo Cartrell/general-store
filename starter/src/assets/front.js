@@ -3,6 +3,8 @@ let currencySymbol = '$';
 /** @type {Set.<HTMLImageElement>} */
 let errorImages = new Set();
 
+const rgbOptionColorNames = ['blue', 'green', 'red'];
+
 // Draws product list
 function drawProducts() {
     let productList = document.querySelector('.products');
@@ -10,7 +12,7 @@ function drawProducts() {
     products.forEach((element) => {
       const price = Number(element.price).toFixed(2);
         productItems += `
-            <div class="product panel-back" data-productId='${element.productId}'>
+            <div class="product panel-back panel-back-blue" data-productId='${element.productId}'>
                 <img src='${element.image}'>
                 <h3>${element.name}</h3>
                 <p>price: ${currencySymbol}${price}</p>
@@ -179,14 +181,14 @@ document.querySelector('.empty-btn').addEventListener('click', (e) => {
         drawCart();
         drawCheckout();
     }
-})
+});
 /* End all items from cart */
 
 /* Begin currency converter */
 function currencyBuilder(){
     let currencyPicker = document.querySelector('.currency-selector');
     let select = document.createElement("select");
-    select.classList.add("currency-select", "panel-back");
+    select.classList.add("currency-select", "panel-back", "panel-back-blue");
     select.innerHTML = `<option value="USD">USD</option>
                         <option value="EUR">EUR</option>
                         <option value="YEN">YEN</option>`;
@@ -216,12 +218,23 @@ document.querySelector('.currency-select').addEventListener('change', function h
 /* End currency converter */
 
 /* begin - add new product */
-document.getElementById('add-product').addEventListener('click', () => {
-  const formData = new FormData(form);
-  const newProductId = Number.parseInt(formData.get('new-product-id-input'), 10);
+function presentAddNewProductMessage(message) {
+  /** @type {HTMLParagraphElement | null} */
+  const element = document.querySelector('#add-new-product-result');
+  if (!element) {
+    return;
+  }
 
+  element.textContent = message;
+  setTimeout(() => {
+    element.textContent = '';
+  }, 4000);
+}
+
+document.getElementById('add-button').addEventListener('click', () => {
   /** @type {HTMLInputElement} */
   const newProductIdInput = document.getElementById('new-product-id-input');
+  const newProductId = newProductIdInput.valueAsNumber;
   if (isProductIdUnique(newProductId)) {
     newProductIdInput.setCustomValidity('');
   } else {
@@ -234,19 +247,52 @@ document.getElementById('add-product').addEventListener('click', () => {
     return;
   }
 
+  /** @type {HTMLInputElement} */
+  const newProductPriceInput = document.getElementById('new-product-price-input');
+  const formData = new FormData(form);
   const productData = {
     id: newProductId,
-    name: formData.get('new-product-name-input'),
-    price: formData.get('new-product-price-input'),
     image: formData.get('new-product-image-input'),
+    name: formData.get('new-product-name-input'),
+    price: newProductPriceInput.valueAsNumber,
   };
 
   if (addProductToDb(productData)) {
+    presentAddNewProductMessage('New product added successfully!');
     drawProducts();
+  } else {
+    presentAddNewProductMessage('Unable to add the new product...');
   }
 });
 
 /* end - add new product */
+
+// initialize rgb selector
+/**
+ * @param {string} colorName 
+ */
+function changeUiColor(colorName) {
+  if (!rgbOptionColorNames.includes(colorName)) {
+    return;
+  }
+
+  /**
+   * @param {HTMLElement} element 
+   */
+  function removeOptionColorClass(element) {
+    rgbOptionColorNames.forEach((rgbOptionColorName) => {
+      const optionClassName = `panel-back-${rgbOptionColorName}`;
+      element.classList.remove(optionClassName);
+    });
+  }
+
+  const newOptionClassName = `panel-back-${colorName}`;
+  const elements = document.querySelectorAll('.panel-back');
+  elements.forEach((element) => {
+    removeOptionColorClass(element);
+    element.classList.add(newOptionClassName);
+  });
+}
 
 // immediately invoked function expression (IIFE) used for initialization to prevent
 // temporary variables from polluting the global namespace
@@ -259,6 +305,14 @@ document.getElementById('add-product').addEventListener('click', () => {
   /** @type {HTMLHeadingElement} */
   const header = document.getElementById('storeName');
   header.innerText = getStoreHeader();
+
+  /** @type {HTMLSelectElement} */
+  const rgbSelect = document.querySelector('.rgb-select');
+  rgbSelect.addEventListener('change', (event) => {
+    changeUiColor(event.target.value);
+  });
+
+  rgbSelect.selectedIndex = 0;
 })();
 
 /* End standout suggestions */
