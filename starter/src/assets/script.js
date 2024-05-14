@@ -69,7 +69,7 @@ const products = [];
 
 
 
-const BaseFolder = '/images/products/';
+const BaseFolder = './images/products/';
 const DefaultExt = 'webp';
 
 let nextAvailableProductId = 0;
