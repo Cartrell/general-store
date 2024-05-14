@@ -1,12 +1,25 @@
 # Shopping Cart Project
 
+![](./starter/src/dev-assets/general-store.webp)
+
+## Udacity's Standout Functionality
+* Added currency converter
+* Added form for adding new products
+
+## My own Standout Functionality
+* Uses 9-slice borders using [border-image-slice](https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-slice)
+* Added RGB color-changer for the
+* Added 42 products. By default, betweem three and seven products will be displayed at random each time the page is loaded.
+* Each time the page loaded, the welcome message is chosen from a few pre-defined ones.
+* The form for adding new products uses both standard and custom validation
+
 ### Asset Attributions
 * [Time Fantasy Icons](https://timefantasy.net)
 * [Town background](https://opengameart.org/content/rpg-town-pixel-art-assets)
 * ["Golden UI" Borders](https://opengameart.org/content/golden-ui)
-* [USD Currency Icon](https://uxwing.com/us-dollar-coin-color-icon/)
-* [Euro Currency Icon](https://uxwing.com/euro-coin-color-icon/)
-* [Yen Currency Icon](https://uxwing.com/yen-coin-color-icon/)
+* [USD Currency Icon](https://uxwing.com/us-dollar-coin-color-icon/) (currently unused)
+* [Euro Currency Icon](https://uxwing.com/euro-coin-color-icon/) (currently unused)
+* [Yen Currency Icon](https://uxwing.com/yen-coin-color-icon/) (currently unused)
 
 ## Functionality
 
